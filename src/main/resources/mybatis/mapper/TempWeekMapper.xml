@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.dao.TempWeekDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sinosoft.pojo.TempWeekPojo">
+        <id column="id" property="id"/>
+        <result column="city_name" property="cityName"/>
+        <result column="cur_time" property="curTime"/>
+        <result column="maximum_temp" property="maximumTemp"/>
+        <result column="minimum_temp" property="minimumTemp"/>
+        <result column="create_time" property="createTime"/>
+        <result column="province_name" property="provinceName"/>
+    </resultMap>
+
+    <insert id="save" parameterType="com.sinosoft.pojo.TempWeekPojo">
+        INSERT INTO tbl_city_temperature_7days
+        (city_name, cur_time, maximum_temp, minimum_temp, create_time, province_name)
+        VALUES (#{entity.cityName},
+                #{entity.curTime},
+                #{entity.maximumTemp},
+                #{entity.minimumTemp},
+                #{entity.createTime},
+                #{entity.provinceName})
+    </insert>
+
+    <delete id="deleteAll">
+        truncate table tbl_city_temperature_7days
+    </delete>
+
+    <select id="getTempListByProvince" resultMap="BaseResultMap">
+        SELECT * FROM tbl_city_temperature_7days where 1 = 1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(cur_time,'%Y-%m-%d') >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[and DATE_FORMAT(cur_time,'%Y-%m-%d') <= #{endTime}]]>
+        </if>
+        <if test="provinceName != null and provinceName != ''">
+            and province_name = #{provinceName}
+        </if>
+        order by create_time
+        <if test="page != null and limit != null">
+            limit ${page}, ${limit};
+        </if>
+    </select>
+
+    <select id="getTempListCountByProvince" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tbl_city_temperature_7days where 1 = 1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(cur_time,'%Y-%m-%d') >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[and DATE_FORMAT(cur_time,'%Y-%m-%d') <= #{endTime}]]>
+        </if>
+        <if test="provinceName != null and provinceName != ''">
+            and province_name = #{provinceName}
+        </if>
+    </select>
+
+    <select id="getTempListByCity" resultMap="BaseResultMap">
+        SELECT * FROM tbl_city_temperature_7days where 1 = 1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(cur_time,'%Y-%m-%d') >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[and DATE_FORMAT(cur_time,'%Y-%m-%d') <= #{endTime}]]>
+        </if>
+        <if test="cityName != null and cityName != ''">
+            and city_name = #{cityName}
+        </if>
+        order by create_time
+        <if test="page != null and limit != null">
+            limit ${page}, ${limit};
+        </if>
+    </select>
+
+    <select id="getTempListCountByCity" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tbl_city_temperature_7days where 1 = 1
+        <if test="startTime != null and startTime != ''">
+            and DATE_FORMAT(cur_time,'%Y-%m-%d') >= #{startTime}
+        </if>
+        <if test="endTime != null and endTime != ''">
+            <![CDATA[and DATE_FORMAT(cur_time,'%Y-%m-%d') <= #{endTime}]]>
+        </if>
+        <if test="cityName != null and cityName != ''">
+            and city_name = #{cityName}
+        </if>
+    </select>
+
+    <select id="queryWeekTemp" resultMap="BaseResultMap">
+        SELECT city_name,
+               province_name,
+               ROUND(AVG(maximum_temp)) AS maximum_temp,
+               ROUND(AVG(minimum_temp)) AS minimum_temp
+        FROM tbl_city_temperature_7days
+        GROUP BY city_name
+    </select>
+
+</mapper>

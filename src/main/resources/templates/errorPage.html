@@ -1,0 +1,61 @@
+<!--
+@author hiYuzu
+@version V1.0
+@date 2021/11/24 16:15
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        .warn {
+            background-color: #db7093;
+        }
+
+        .table-common {
+            border-color: black;
+            border-style: solid;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .button-back {
+            font-size: 18px;
+            background-color: #66ccff;
+            border: 1px solid green;
+            border-radius: 6px;
+        }
+    </style>
+    <title>error</title>
+</head>
+<body class="warn">
+<!--/*@thymesVar id="customMsg" type="java.lang.String"*/-->
+<div style="font-size: 80px; text-align: center;" th:text="${customMsg}"></div>
+<br>
+<table class="table-common">
+    <tr>
+        <!--/*@thymesVar id="status" type="java.lang.String"*/-->
+        <td th:text="${status}"></td>
+    </tr>
+    <tr>
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+        <td th:text="${message}"></td>
+    </tr>
+    <tr>
+        <!--/*@thymesVar id="timestamp" type="java.lang.String"*/-->
+        <td th:text="${timestamp}"></td>
+    </tr>
+</table>
+<div style="text-align: center;">
+    <button class="button-back" onclick="backHome()">返回首页</button>
+</div>
+<script th:inline="javascript">
+    function backHome() {
+        const scheme = [[${scheme}]];
+        const serverName = [[${serverName}]];
+        const serverPort = [[${serverPort}]];
+        window.location = scheme + "://" + serverName + ":" + serverPort;
+    }
+</script>
+</body>
+</html>

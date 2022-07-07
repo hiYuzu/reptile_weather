@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sinosoft.dao.AreaDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sinosoft.pojo.Area">
+        <id column="id" property="id"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_name" property="cityName"/>
+    </resultMap>
+
+    <select id="getProvince" resultType="java.lang.String">
+        select distinct province_name
+        from sys_area
+    </select>
+
+    <select id="getCity" parameterType="java.lang.String" resultType="java.lang.String">
+        select city_name
+        from sys_area
+        where province_name = #{provinceName}
+    </select>
+</mapper>

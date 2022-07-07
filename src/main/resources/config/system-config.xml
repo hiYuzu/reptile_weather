@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BackGround pversion="1.0">
+	<System-Config>
+		<RootUser>admin</RootUser>
+		<SysUrl>http://127.0.0.1:8085/</SysUrl>
+	</System-Config>
+</BackGround>
